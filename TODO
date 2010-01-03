@@ -1,0 +1,12 @@
+ Version 0.2
+-------------
+* Documentation for
+    - DictField
+    - ListField
+* Documentation: Overview on which backend can handle which types correctly
+* Testsuite for backends
+    -  including unicode/utf8 tests
+
+ Version 0.3
+-------------
+* i18n support
