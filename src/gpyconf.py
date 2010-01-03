@@ -141,10 +141,12 @@ class Configuration(MVCComponent):
         if attr in self.fields:
             field = self.fields[attr]
             field.value = value
-            self.on_field_value_changed(field, field, value)
-            # TOFIX
+            self.on_field_value_changed(field, value)
         else:
-            self.__dict__[attr] = value
+            super(Configuration, self).__setattr__(attr, value)
+
+    def on_field_value_changed(self, field, new_value):
+        pass
 
     def __getattr__(self, name):
         if name in ('frontend', 'window'):

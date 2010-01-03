@@ -26,7 +26,7 @@ class XMLBackend(dict, FileBasedBackend):
             return self.__getitem__(item)
         except KeyError:
             raise MissingOption(item)
-    set_option = lambda self, item, value: try_(self.__setitem__, item, value)
+    set_option = dict.__setitem__
 
     options = property(lambda self:self.keys())
     tree = property(lambda self:self)
