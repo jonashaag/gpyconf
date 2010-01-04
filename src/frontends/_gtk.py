@@ -248,19 +248,18 @@ class FloatingPointNumberWidget(Widget):
     _changed_signal = 'value-changed'
     prop = 'value'
 
-    def __init__(self, field):
+    def __init__(self, field, decimals=None):
         Widget.__init__(self, field)
         self.widget.set_range(field.min, field.max)
         self.widget.set_increments(field.step, self.widget.get_increments()[0])
-        self.widget.set_digits(field.decimals)
+        self.widget.set_digits(field.decimals if decimals is None else decimals)
 
         self.value = field.value
         # setting the value doesn't work before the range/digits setup
 
 class IntegerWidget(FloatingPointNumberWidget):
     def __init__(self, field):
-        field.decimals = 0
-        FloatingPointNumberWidget.__init__(self, field)
+        FloatingPointNumberWidget.__init__(self, field, decimals=None)
 
 class CharWidget(Widget):
     widget = gtk.Entry
