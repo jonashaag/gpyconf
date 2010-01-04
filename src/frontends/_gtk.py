@@ -1,6 +1,7 @@
 # %FILEHEADER%
 """
-    The gpyconf GTK frontend is a GTK frontend for gpyconf.
+    gpyconf GTK+ frontend
+    ---------------------
 
     Every :class:`Field <gpyconf.fields.base.Field>` is mapped to a :class:`Widget`,
     which handles interaction between GTK widgets and gpyconf fields.
@@ -242,7 +243,7 @@ class BooleanWidget(Widget):
         self.label = None
         self.label2 = None
 
-class IntegerWidget(Widget):
+class FloatingPointNumberWidget(Widget):
     widget = gtk.SpinButton
     _changed_signal = 'value-changed'
     prop = 'value'
@@ -255,6 +256,11 @@ class IntegerWidget(Widget):
 
         self.value = field.value
         # setting the value doesn't work before the range/digits setup
+
+class IntegerWidget(FloatingPointNumberWidget):
+    def __init__(self, field):
+        field.decimals = 0
+        FloatingPointNumberWidget.__init__(self, field)
 
 class CharWidget(Widget):
     widget = gtk.Entry
@@ -345,6 +351,7 @@ WIDGET_MAP = {
     'FileField'         : FileWidget,
     'EmailAddressField' : EmailAddressWidget,
     'IntegerField'      : IntegerWidget,
+    'FloatField'      : FloatingPointNumberWidget,
     'MultiOptionField'  : MultiOptionWidget,
     'ColorField'        : ColorWidget,
     'DateTimeField'     : DateTimeWidget,
