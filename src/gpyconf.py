@@ -130,23 +130,24 @@ class Configuration(MVCComponent):
         self.backend_instance = self.backend(weakref.ref(self))
         self.logger.info("Backend initialized (%s)" % self.backend)
 
+        for name, instance in self.fields.iteritems():
+            instance.connect('value-changed', self.on_field_value_changed)
+
         self.emit('initialized')
         self.read()
         # read the config andd set it to the fields.
+
+    def on_field_value_changed(self, sender, field, new_value):
+        self.emit('field-value-changed', field.field_var, new_value)
 
 
     # MAGIC/API:
     def __setattr__(self, attr, value):
         # if ``attr`` is a field, don't overwrite the field but its value
         if attr in self.fields:
-            field = self.fields[attr]
-            field.value = value
-            self.on_field_value_changed(field, value)
+            return self.fields[attr].set_value(value)
         else:
             super(Configuration, self).__setattr__(attr, value)
-
-    def on_field_value_changed(self, field, new_value):
-        pass
 
     def __getattr__(self, name):
         if name in ('frontend', 'window'):
@@ -283,10 +284,7 @@ class Configuration(MVCComponent):
     show_window = run_frontend # compatibility
 
     def frontend_field_value_changed(self, sender, field, new_value):
-        if isinstance(field, str):
-            field = self.fields[field]
-        field.set_value(new_value) # WHY is this?
-        self.emit('field-value-changed', field, field.value)
+        setattr(self, field, new_value)
 
     def frontend_log(self, sender, msg, level):
         getattr(self.logger, level)("Frontend: %s" % msg)

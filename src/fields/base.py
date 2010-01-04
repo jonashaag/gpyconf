@@ -169,6 +169,7 @@ class Field(NoConfigurationField, MVCComponent):
         self._value = value
         if emit:
             self.emit('value-changed', self, value)
+        return value
 
     #: The field's current value.
     # Property for :meth:`get_value` and :meth:`set_value`
