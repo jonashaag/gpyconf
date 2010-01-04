@@ -207,13 +207,16 @@ class IntegerField(Field):
         The number of decimals to be stored and displayed, defaults to 0
         (no decimals places).
     """
-    allowed_types = 'ints and floats'
+    _type = int
     _default_values = {
         'max' : 100,
         'min' : 0,
-        'decimals' : 0,
         'step' : 1
     }
+
+    def allowed_types(self):
+        "%ss between %d and %d, stepped with %d" % (self._type.__name__,
+            self.min, self.max, self.step)
 
     def custom_default(self):
         return self.min
@@ -226,26 +229,26 @@ class IntegerField(Field):
         return unicode(value)
 
     def conf_to_python(self, value):
-        return float(value)
+        return self._type(value)
 
     def to_python(self, value):
-        if not isinstance(value, float):
-            try:
-                value = float(value)
-            except (TypeError, ValueError):
-                self.validation_error(value)
-        return int(value) if value.is_integer() else value
+        try:
+            return self._type(value)
+        except (TypeError, ValueError):
+            self.validation_error(value)
 
     def __valid__(self):
         value = self.value
         return not (self.min > value or value > self.max or value % self.step)
 
-    def validation_error(self, faulty=None):
-        if not isinstance(faulty, (int, float)):
-            faulty = type(faulty).__name__
-        raise InvalidOptionError(self,
-            "IntegerField allows only int or float types between %d and %d, "
-            "stepped with %d, not %s" % (self.min, self.max, self.step, faulty))
+class FloatField(IntegerField):
+    _type = float
+    _default_values = {
+        'max' : 100,
+        'min' : 0,
+        'step' : 1,
+        'decimals' : 0
+    }
 
 
 class CharField(Field):
