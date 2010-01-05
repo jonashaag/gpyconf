@@ -259,7 +259,7 @@ class FloatingPointNumberWidget(Widget):
 
 class IntegerWidget(FloatingPointNumberWidget):
     def __init__(self, field):
-        FloatingPointNumberWidget.__init__(self, field, decimals=None)
+        FloatingPointNumberWidget.__init__(self, field, decimals=0)
 
 class CharWidget(Widget):
     widget = gtk.Entry
