@@ -100,6 +100,7 @@ class Field(NoConfigurationField, MVCComponent):
 
         self.connect('initialized', self.on_initialized)
         self.emit('initialized', kwargs)
+        self._external_on_initialized(kwargs) # quick n dirty for cream
         if kwargs:
             # there are still kwargs left - either the Field subclass did not
             # pop all kwargs it takes or unexpected kwargs were given.
@@ -130,6 +131,9 @@ class Field(NoConfigurationField, MVCComponent):
             function (otherwise, a `TypeError` will be risen, see comments
             in :meth:`Field.__init__()`).
         """
+        pass
+
+    def _external_on_initialized(self, kwargs):
         pass
 
     def __getattribute__(self, attribute):
