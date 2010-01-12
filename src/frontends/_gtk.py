@@ -250,8 +250,9 @@ class FloatingPointNumberWidget(Widget):
 
     def __init__(self, field, decimals=None):
         Widget.__init__(self, field)
-        self.widget.set_range(field.min, field.max)
-        self.widget.set_increments(field.step, self.widget.get_increments()[0])
+        self.widget.set_range(float(field.min), float(field.max))
+        self.widget.set_increments(float(field.step),
+                                   self.widget.get_increments()[0])
         self.widget.set_digits(field.decimals if decimals is None else decimals)
 
         self.value = field.value
