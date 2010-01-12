@@ -3,9 +3,9 @@
 
 # Contains gpyconf's default fields shipped.
 
-from .base import NoConfigurationField, Field
+from .base import Field
 from .._internal.exceptions import InvalidOptionError
-from .._internal.utils import isiterable, RGBTuple
+from .._internal.utils import RGBTuple
 from .._internal.dicts import ordereddict
 
 class BooleanField(Field):
@@ -401,9 +401,10 @@ class ColorField(Field):
 
     def to_python(self, value):
         # TODO: cleanup.
-        if isiterable(value):
+        if isinstance(value, basestring):
+            return RGBTuple.from_hexstring(value)
+        else:
             return RGBTuple(value)
-        return RGBTuple.from_hexstring(value)
 
     def python_to_conf(self, value):
         return value.to_string()
