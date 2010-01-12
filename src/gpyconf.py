@@ -55,7 +55,7 @@ class ConfigurationMeta(type):
         self.fields = dicts.FieldsDict()
 
         _fields = [(name, field) for name, field in dict.iteritems()
-                   if isinstance(field, fields.NoConfigurationField)]
+                   if isinstance(field, fields.Field)]
         _fields.sort(cmp=sort_by_creation_counter)
 
         for name, instance in _fields:
@@ -95,18 +95,16 @@ class Configuration(MVCComponent):
             ...
     """
     __metaclass__ = ConfigurationMeta
+
     #: a :class:`dict` mapping all attribute names to field instances
     fields = None
     frontend_instance = None
     initially_read = False
-    should_save = False
-
     logger = None
     logging_level = 'warning'
 
     #: The :doc:`backend <backends>` to use
     backend = DefaultBackend
-
     #: The :doc:`frontend <frontends>` to use
     frontend = DefaultFrontend
 
@@ -127,7 +125,11 @@ class Configuration(MVCComponent):
         if self.logger is None:
             self.logger = logging.Logger(self.__class__.__name__, self.logging_level)
         self.logger.info("Logger initialized (%s)" % self.logger)
-        self.backend_instance = self.backend(weakref.ref(self))
+
+        if not hasattr(self, 'backend_instance'):
+            self.backend_instance = self.backend(weakref.ref(self))
+        self.backend_instance.connect('log', self.backend_log)
+
         self.logger.info("Backend initialized (%s)" % self.backend)
 
         for name, instance in self.fields.iteritems():
@@ -150,9 +152,6 @@ class Configuration(MVCComponent):
             super(Configuration, self).__setattr__(attr, value)
 
     def __getattr__(self, name):
-        if name in ('frontend', 'window'):
-            # window as alias
-            return self.get_frontend()
         try:
             return self.fields[name].value
         except KeyError:
@@ -209,8 +208,11 @@ class Configuration(MVCComponent):
             self.backend_instance.set_option(name, value)
 
         if save:
-            self.emit('pre-save')
-            self.backend_instance.save()
+            self._save()
+
+    def _save(self):
+        self.emit('pre-save')
+        self.backend_instance.save()
 
     def read(self):
         """
@@ -281,7 +283,8 @@ class Configuration(MVCComponent):
         self.logger.debug("Running frontend...")
         self.get_frontend().run()
 
-    show_window = run_frontend # compatibility
+    def show_window(self):
+        self.run_frontend()
 
     def frontend_field_value_changed(self, sender, field, new_value):
         setattr(self, field, new_value)
@@ -291,3 +294,8 @@ class Configuration(MVCComponent):
 
     def frontend_save(self, sender):
         self.save()
+
+
+    # BACKEND:
+    def backend_log(self, sender, msg, level):
+        getattr(self.logger, level)("Backend: %s" % msg)
