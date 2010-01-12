@@ -130,8 +130,8 @@ def to_xml_element(name, obj):
     encoder(element, obj)
     return element
 
-def to_python_object(xml_element):
-    return get_handlers_for(xml_element.get('type'))[1](xml_element)
+def to_python_object(xml_element, type=None):
+    return get_handlers_for(type or xml_element.get('type'))[1](xml_element)
 
 
 def serialize(dictobj, root_node=None, file=None, encoding=None):
