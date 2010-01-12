@@ -6,32 +6,9 @@
 from ..mvc import MVCComponent
 from .._internal.exceptions import InvalidOptionError
 
-__all__= ('NoConfigurationField', 'Field')
+__all__= ('Field',)
 
-class NoConfigurationField(object):
-    """
-    Base class for all fields.
-    """
-    creation_counter = 0
-    is_child = False
-
-    def update_counter(self):
-        self.creation_counter = NoConfigurationField.creation_counter
-        NoConfigurationField.creation_counter += 1
-        # we want the fields exactly in the order we defined them,
-        # so we'll need a creation counter because the fields are
-        # handled by ConfigurationMeta using dicts (which aren't sorted)
-
-    @property
-    def name(self):
-        """
-        Name of the field class
-        (this simply is a wrapper to the ``self.__class__.__name__`` attribute)
-        """
-        return self.__class__.__name__
-
-
-class Field(NoConfigurationField, MVCComponent):
+class Field(MVCComponent):
     """
     :param label:
         Label/short description of the presented value (e.g. "Text color:")
@@ -72,6 +49,7 @@ class Field(NoConfigurationField, MVCComponent):
         is risen.
 
     """
+    creation_counter = 0
     default = None
     __events__ = (
         'initialized',
@@ -136,13 +114,28 @@ class Field(NoConfigurationField, MVCComponent):
     def _external_on_initialized(self, kwargs):
         pass
 
+    def update_counter(self):
+        self.creation_counter = Field.creation_counter
+        Field.creation_counter += 1
+        # we want the fields exactly in the order we defined them,
+        # so we'll need a creation counter because the fields are
+        # handled by ConfigurationMeta using dicts (which aren't sorted)
+
+    @property
+    def name(self):
+        """
+        Name of the field class
+        (this simply is a wrapper to the ``self.__class__.__name__`` attribute)
+        """
+        return self.__class__.__name__
+
     def __getattribute__(self, attribute):
         if attribute == 'default':
             if hasattr(self, '_user_set_default'):
                 return self._user_set_default
             elif hasattr(self, 'custom_default'):
                 return self.custom_default()
-        return NoConfigurationField.__getattribute__(self, attribute)
+        return object.__getattribute__(self, attribute)
 
     def __setattr__(self, attribute, value):
         if attribute == 'default':
