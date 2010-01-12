@@ -10,7 +10,7 @@ class DEFAULT:
         return 'DEFAULT'
 
 def isiterable(iterable, include_strings=False):
-    if isinstance(iterable, str):
+    if isinstance(iterable, basestring):
         return include_strings
     try:
         iter(iterable)
@@ -43,10 +43,8 @@ def filename_from_classname(klass, ext=''):
         name = klass.__class__.__name__
 
     filename = re.sub('([a-z])([A-Z])', '\g<1>_\g<2>', name).lower()
-    if ext:
-        return filename+'.'+ext
-    else:
-        return filename
+    # CamelCase => camel_case
+    return ('%s.%s' % (filename, ext)).rstrip('.')
 
 
 class RGBTuple(tuple):
@@ -54,8 +52,7 @@ class RGBTuple(tuple):
     @classmethod
     def from_hexstring(cls, value):
         """ Returns a RGB tuple from hexstring ('#RRGGBB') """
-        if value.startswith('#'):
-            value = value[1:]
+        value = value.lstrip('#')
         return cls(int(value[i:i+2], 16) for i in (0, 2, 4))
 
     def to_string(self):
