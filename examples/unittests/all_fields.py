@@ -1,4 +1,5 @@
-from gpyconf import Configuration, fields
+from gpyconf import fields
+from gpyconftest import Configuration
 import gpyconf.frontends._gtk
 
 MULTI_OPTION_FIELD_OPTIONS = (

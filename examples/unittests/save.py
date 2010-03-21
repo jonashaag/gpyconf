@@ -3,10 +3,6 @@ import unittest
 
 class StorageTestCase(unittest.TestCase):
     def setUp(self):
-        import sys, os
-        sys.path.append(os.path.abspath(os.path.join(
-                        os.path.dirname(__file__), os.pardir)))
-
         from all_fields import AllFieldsTest
         self._class = AllFieldsTest
         self.options = {}

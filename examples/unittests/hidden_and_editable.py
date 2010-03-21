@@ -1,8 +1,9 @@
 # Tests if hidden and editable are handled correctly.
 import unittest
 import gpyconf
+import gpyconftest
 
-class HiddenAndEditableTestConf(gpyconf.Configuration):
+class HiddenAndEditableTestConf(gpyconftest.Configuration):
     editable = gpyconf.fields.IntegerField(default=42)
     not_editable = gpyconf.fields.IntegerField(default=42, editable=False)
 

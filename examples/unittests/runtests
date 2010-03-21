@@ -1,0 +1,5 @@
+#!/bin/sh
+cd /home/jonas/projects/gpyconf/examples
+find -name "*.py" -exec python {} \;
+rm *ini
+rm *xml

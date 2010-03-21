@@ -1,8 +1,9 @@
 # Tests the gpyconf.fields.FontField, particularly saving.
 import unittest
 import gpyconf
+import gpyconftest
 
-class FontFieldTestConf(gpyconf.Configuration):
+class FontFieldTestConf(gpyconftest.Configuration):
     f = gpyconf.fields.FontField()
 
 class FontFieldTestCase(unittest.TestCase):

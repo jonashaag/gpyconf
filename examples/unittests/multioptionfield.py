@@ -7,6 +7,7 @@
 
 from itertools import izip
 import gpyconf
+import gpyconftest
 from datetime import datetime
 import unittest
 
@@ -23,7 +24,7 @@ OPTIONS2 = (
     ([1,2,3], 'foo') # fails
 )
 
-class MultiOptionFieldTestConf(gpyconf.Configuration):
+class MultiOptionFieldTestConf(gpyconftest.Configuration):
     a = gpyconf.fields.MultiOptionField(options=izip(OPTIONS1.values(), OPTIONS1.keys()))
     b = gpyconf.fields.MultiOptionField(options=OPTIONS2)
 
