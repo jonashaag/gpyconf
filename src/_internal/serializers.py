@@ -18,7 +18,7 @@ def unserialize_list(string, itemtype=str):
     using ``itemtype`` as type for each item.
     """
     if itemtype is None: itemtype = lambda *x:None
-    if not string: return [itemtype()]
+    if not string: return list()
     if itemtype is bool: itemtype = lambda x:bool(int(x))
     return map(itemtype, string.split(LIST_JOIN_SEQUENCE))
 

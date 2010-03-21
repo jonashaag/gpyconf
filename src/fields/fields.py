@@ -429,7 +429,8 @@ class FontField(DictField):
     empty, the `color` key then defaults to `#000000` (black) and the
     `bold` and `italic` and `underlined` default to :const:`False`
     """
-    _default = {'name' : 'Sans', 'size' : 10, 'color' : '#000000',
+    def custom_default(self):
+        return {'name' : 'Sans', 'size' : 10, 'color' : '#000000',
                 'italic' : False, 'bold' : False, 'underlined' : False}
 
     def on_initialized(self, sender, kwargs):

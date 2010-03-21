@@ -50,8 +50,7 @@ def dict_to_font_description(_dict):
     from pango import FontDescription, STYLE_ITALIC, WEIGHT_BOLD
     desc = FontDescription()
     desc.set_family(_dict['name'])
-    desc.set_size(_dict['size']*1024)
-    # *1024.0? aha.
+    desc.set_size(_dict['size']*1024) # *1024? aha.
     if _dict['italic']:
         desc.set_style(STYLE_ITALIC)
     if _dict['bold']:

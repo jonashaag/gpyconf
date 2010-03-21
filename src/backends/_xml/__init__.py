@@ -3,23 +3,21 @@
 from ..filebased import FileBasedBackend
 from .. import NONE, MissingOption
 
-from xmlserialize import serialize, unserialize
+from xmlserialize import serialize_to_file, unserialize_file
 
 class XMLBackend(dict, FileBasedBackend):
     ROOT_ELEMENT = 'configuration'
-    initial_file_content = '<%s></%s>' % (ROOT_ELEMENT, ROOT_ELEMENT)
+    initial_file_content = '<{0}></{0}>'.format(ROOT_ELEMENT)
 
     def __init__(self, backref, extension='xml', filename=None):
         dict.__init__(self)
         FileBasedBackend.__init__(self, backref, extension, filename)
 
     def read(self):
-        with open(self.file) as fobj:
-            self.update(unserialize(fobj))
+        return unserialize_file(self.file)
 
     def save(self):
-        with open(self.file, 'w') as fobj:
-            serialize(self, root_node=self.ROOT_ELEMENT, file=fobj)
+        serialize_to_file(self, self.file, root_tag=self.ROOT_ELEMENT)
 
     def get_option(self, item):
         try:

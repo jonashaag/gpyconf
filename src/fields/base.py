@@ -147,13 +147,6 @@ class Field(MVCComponent):
         """ Returns the (pythonic) value of the widget """
         return self._value
 
-    def _set_value(self, value):
-        if not self.editable:
-            raise AttributeError("Can't change value of non-editable field '%s'"
-                % self.name)
-        if value is not None:
-            self.set_value(value)
-
     def set_value(self, value):
         """
         Validates ``value`` (using the :meth:`to_python` method) and
@@ -161,6 +154,9 @@ class Field(MVCComponent):
 
         Emits the :signal:`value-changed` signal if the field's value changed.
         """
+        if not self.editable:
+            raise AttributeError("Can't change value of non-editable field '%s'"
+                % self.name)
         value = self.to_python(value)
         emit = value != self.value
         self._value = value
@@ -170,7 +166,7 @@ class Field(MVCComponent):
 
     #: The field's current value.
     # Property for :meth:`get_value` and :meth:`set_value`
-    value = property(get_value, _set_value)
+    value = property(get_value, set_value)
 
     def isvalid(self):
         """
