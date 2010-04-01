@@ -4,6 +4,7 @@ from ..filebased import FileBasedBackend
 from .. import NONE, MissingOption
 
 from xmlserialize import serialize_to_file, unserialize_file
+from lxml.etree import XMLSyntaxError
 
 class XMLBackend(dict, FileBasedBackend):
     ROOT_ELEMENT = 'configuration'
@@ -14,7 +15,11 @@ class XMLBackend(dict, FileBasedBackend):
         FileBasedBackend.__init__(self, backref, extension, filename)
 
     def read(self):
-        return unserialize_file(self.file)
+        try:
+            return unserialize_file(self.file)
+        except XMLSyntaxError, err:
+            self.log('Could not parse XML configuration file: %s' % err,
+                     level='error')
 
     def save(self):
         serialize_to_file(self, self.file, root_tag=self.ROOT_ELEMENT)
