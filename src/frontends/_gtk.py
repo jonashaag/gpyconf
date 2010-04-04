@@ -190,7 +190,7 @@ class Widget(GSignals):
         Returns the widget's value. If the :attr:`prop` attribute is defined,
         tries to return the corresponding :attr:`gtk.Widget.props` attribute.
 
-        If not, :exc:`NotImplementedError` is risen (so this method has to be
+        If not, :exc:`NotImplementedError` is raised (so this method has to be
         overwritten in that case).
         """
         if hasattr(self, 'prop'):
@@ -204,7 +204,7 @@ class Widget(GSignals):
         defined, tries to set the corresponding :attr:`gtk.Widget.props`
         attribute.
 
-        If not, :exc:`NotImplementedError` is risen (so this method has to be
+        If not, :exc:`NotImplementedError` is raised (so this method has to be
         overwritten in that case).
         """
         if hasattr(self, 'prop'):

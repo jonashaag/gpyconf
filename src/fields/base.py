@@ -46,7 +46,7 @@ class Field(MVCComponent):
         processed by that field. If there are remaining (not-used)
         arguments after that call, an
         :exc:`InvalidOptionError <gpyconf.exceptions.InvalidOptionError>`
-        is risen.
+        is raised.
 
     """
     creation_counter = 0
@@ -106,7 +106,7 @@ class Field(MVCComponent):
             Optional keyword arguments passed to the :meth:`__init__()`
             method. All items of this dictionary have to be deleted
             (recommended is to :meth:`dict.pop()` them) at the end of this
-            function (otherwise, a `TypeError` will be risen, see comments
+            function (otherwise, a `TypeError` will be raised, see comments
             in :meth:`Field.__init__()`).
         """
         pass

@@ -61,7 +61,7 @@ class Frontend(MVCComponent):
         |                       | Controller class saves the current field                     |
         |                       | values. If one of that value is not valid, an                |
         |                       | :exc:`InvalidOptionError <gpyconf.exceptions.InvalidOption>` |
-        |                       | is risen. This error should be  catched and                  |
+        |                       | is raised. This error should be  catched and                 |
         |                       | the user should then be  notified about that                 |
         |                       | incorrect input to make him correct that fault.              |
         +-----------------------+--------------------------------------------------------------+

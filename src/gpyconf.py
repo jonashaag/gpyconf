@@ -165,7 +165,7 @@ class Configuration(MVCComponent):
         if the value is invalid or empty and the field was not marked to allow
         blank values, an
         :exc:`InvalidOptionError <gpyconf._internal.exceptions.InvalidOptionError>`
-        will be risen.
+        will be raised.
 
         Otherwise, passes the fields' values to the backend. If the ``save``
         argument is set :const:`True`, makes the backend store the values

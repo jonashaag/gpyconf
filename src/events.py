@@ -6,7 +6,7 @@ from types import FunctionType
 
 class InvalidEvent(Exception):
     """
-    Risen if a non-defined event should be registered at a strict-mode
+    Raised if a non-defined event should be registered at a strict-mode
     event register.
     """
     def __init__(self, event):
