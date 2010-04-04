@@ -294,6 +294,8 @@ def get_subclasses(klass, recursive=False, max_depth=None, current_depth=0):
 def serialize_atomic(object, tag_name):
     if object is None:
         return NoneTypeSerializer.serialize(None, tag_name, None)
+    if hasattr(object, '__xmlserialize__'):
+        object = object.__xmlserialize__()
 
     object_type = type(object)
     subclass_serializer = None
