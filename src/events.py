@@ -144,7 +144,7 @@ class EventRegister(object):
 
 
         for func in self.all_events_listener:
-            if func._lazy:
+            if func.lazy:
                 lazy_callbacks.append(partial(event, func))
             else:
                 func(event, *args, **kwargs)
