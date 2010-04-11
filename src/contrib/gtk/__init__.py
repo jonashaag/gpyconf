@@ -7,9 +7,10 @@ from gpyconf.frontends._gtk import Widget, WIDGET_MAP
 
 
 class _HotkeyString(unicode):
-    def __init__(self, *args, **kwargs):
-        unicode.__init__(self, *args, **kwargs)
+    def __new__(cls, *args, **kwargs):
+        self = unicode.__new__(cls, *args, **kwargs)
         self.keyval, self.modifiers = accelerator_parse(self)
+        return self
 
 class HotkeyField(CharField):
     def __init__(self, action=None, *args, **kwargs):
