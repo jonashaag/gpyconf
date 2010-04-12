@@ -283,9 +283,6 @@ class Configuration(MVCComponent):
         self.logger.debug("Running frontend...")
         self.get_frontend().run()
 
-    def show_window(self):
-        self.run_frontend()
-
     def frontend_field_value_changed(self, sender, field_name, new_value):
         setattr(self, field_name, new_value)
 
