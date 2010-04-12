@@ -1,5 +1,6 @@
 #!/bin/sh
 cd /home/jonas/projects/gpyconf/examples
-find -name "*.py" -exec python {} \;
+> errors
+find -name "*.py" -exec python {} > /dev/null \;
 rm *ini
 rm *xml
