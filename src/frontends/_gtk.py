@@ -553,8 +553,8 @@ class GtkConfigurationWindow(Frontend):
             return table
         return self._widgets.get_nth_page(tab)
 
-    def on_field_value_changed(self, sender, field, new_value):
-        self.widgets[field.field_var].value = new_value
+    def on_field_value_changed(self, sender, field_instance, new_value):
+        self.widgets[field_instance.field_var].value = new_value
 
     def on_widget_value_changed(self, sender, new_value):
         self.emit('field-value-changed', sender.field_var, new_value)
