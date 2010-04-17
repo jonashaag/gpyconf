@@ -63,6 +63,3 @@ class RGBTuple(tuple):
 
     def __str__(self):
         return self.to_string()
-
-    def __xmlserialize__(self):
-        return tuple(self)

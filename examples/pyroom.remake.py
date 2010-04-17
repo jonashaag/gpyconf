@@ -3,9 +3,9 @@ from gpyconf.fields import IntegerField, BooleanField, MultiOptionField
 from gpyconf.fields import ColorField, FontField
 from gpyconf.backends.python import PythonModuleBackend
 
-themes = [(theme, theme.title()) for theme in (
+themes = ((theme, theme.title()) for theme in (
     'amber', 'c64', 'darkgreen', 'locontrast', 'banker', 'cupid', 'green',
-    'website', 'blue', 'custom', 'grey')]
+    'website', 'blue', 'custom', 'grey'))
 
 class PyRoomConfiguration(Configuration):
     filename = 'pyroom.conf'
@@ -18,7 +18,7 @@ class PyRoomConfiguration(Configuration):
     line_spacing = BooleanField('Line spacing', default=2, group='Line Spacing')
 
     preset = MultiOptionField('Presets:', options=themes,
-        section='Theme', default='c64')
+                              section='Theme', default='c64')
 
     font = FontField('Font:', section='Theme')
     background_color = ColorField('Background color', section='Theme')

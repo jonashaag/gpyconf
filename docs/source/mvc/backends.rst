@@ -10,7 +10,7 @@ backend (which is :class:`gpyconf.backends.configparser.ConfigParserBackend`)
 using the :attr:`backend` attribute. Example::
 
     class MyConfiguration(Configuration):
-        backend = backends.json.JSONBackend
+        backend = backends._json.JSONBackend
 
 This tells the Controller to use the :class:`JSONBackend`, which stores
 options in a JSON file.
@@ -39,7 +39,7 @@ Included backends
 .. automodule:: gpyconf.backends.configparser
    :members:
 
-.. automodule:: gpyconf.backends.json
+.. automodule:: gpyconf.backends._json
    :members:
 
 

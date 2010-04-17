@@ -117,7 +117,7 @@ class Configuration(MVCComponent):
         'initialized'
     )
 
-    def __init__(self, **kwargs):
+    def __init__(self, read=True, **kwargs):
         MVCComponent.__init__(self)
         for key, value in kwargs.iteritems():
             setattr(self, key, value)
@@ -136,7 +136,8 @@ class Configuration(MVCComponent):
             instance.connect('value-changed', self.on_field_value_changed)
 
         self.emit('initialized')
-        self.read()
+        if read:
+            self.read()
         # read the config andd set it to the fields.
 
     def on_field_value_changed(self, sender, field, new_value):

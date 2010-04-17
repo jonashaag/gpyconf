@@ -76,6 +76,7 @@ this).
 The following digraph illustrates this architecture.
 
 .. graphviz::
+
    digraph {
         rankdir=LR;
         User -> Frontend [color="#DCA133", label="interacts with"];
