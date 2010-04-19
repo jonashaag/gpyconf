@@ -156,6 +156,7 @@ class MultiOptionField(Field):
             (42, 'Select me for the answer to Life, the Universe, and Everything')
         ))
     """
+    # TODO: Rewrite this Field and make it use real dictionaries.
     def custom_default(self):
         return self.values[0]
 
@@ -192,7 +193,7 @@ class MultiOptionField(Field):
         return str(value)
 
 
-class IntegerField(Field):
+class NumberField(Field):
     """
     A field representing the :class:`int` datatype. Takes three extra
     arguments:
@@ -201,54 +202,39 @@ class IntegerField(Field):
         The minimal value allowed, defaults to 0.
     :param max:
         The maxmimal value allowed, defaults to 100.
-    :param step:
-        The incrementation step, defaults to 1.
-    :param decimals:
-        The number of decimals to be stored and displayed, defaults to 0
-        (no decimals places).
     """
-    _type = int
-    _default_values = {
-        'max' : 100,
-        'min' : 0,
-        'step' : 1
-    }
-
-    def allowed_types(self):
-        "%ss between %d and %d, stepped with %d" % (self._type.__name__,
-            self.min, self.max, self.step)
+    _abstract = True
+    min = 0
+    max = 100
 
     def custom_default(self):
         return self.min
 
     def on_initialized(self, sender, kwargs):
-        for key, default in self._default_values.iteritems():
-            setattr(self, key, kwargs.pop(key, default))
+        for key in ('min', 'max'):
+            if key in kwargs:
+                setattr(self, key, kwargs.pop(key))
 
     def python_to_conf(self, value):
         return unicode(value)
 
     def conf_to_python(self, value):
-        return self._type(value)
+        return self.num_type(value)
 
     def to_python(self, value):
         try:
-            return self._type(value)
+            return self.num_type(value)
         except (TypeError, ValueError):
             self.validation_error(value)
 
     def __valid__(self):
-        value = self.value
-        return not (self.min > value or value > self.max or value % self.step)
+        return not (self.min > self.value or self.value > self.max)
+
+class IntegerField(NumberField):
+    num_type = int
 
 class FloatField(IntegerField):
-    _type = float
-    _default_values = {
-        'max' : 100,
-        'min' : 0,
-        'step' : 1,
-        'decimals' : 0
-    }
+    num_type = float
 
 
 class CharField(Field):

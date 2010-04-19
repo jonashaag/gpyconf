@@ -242,24 +242,29 @@ class BooleanWidget(Widget):
         self.label = None
         self.label2 = None
 
-class FloatingPointNumberWidget(Widget):
+class NumberWidget(Widget):
     widget = gtk.SpinButton
     _changed_signal = 'value-changed'
     prop = 'value'
 
-    def __init__(self, field, decimals=None):
+    def __init__(self, field):
         Widget.__init__(self, field)
         self.widget.set_range(float(field.min), float(field.max))
-        self.widget.set_increments(float(field.step),
-                                   self.widget.get_increments()[0])
-        self.widget.set_digits(field.decimals if decimals is None else decimals)
+
+class FloatingPointNumberWidget(NumberWidget):
+    def __init__(self, field, decimals=None):
+        NumberWidget.__init__(self, field)
+        self.widget.set_digits(2)
+        self.widget.set_increments(0.01, self.widget.get_increments()[0])
 
         self.value = field.value
         # setting the value doesn't work before the range/digits setup
 
-class IntegerWidget(FloatingPointNumberWidget):
+class IntegerWidget(NumberWidget):
     def __init__(self, field):
-        FloatingPointNumberWidget.__init__(self, field, decimals=0)
+        NumberWidget.__init__(self, field)
+        self.widget.set_digits(0)
+        self.widget.set_increments(1, self.widget.get_increments()[0])
 
 class CharWidget(Widget):
     widget = gtk.Entry

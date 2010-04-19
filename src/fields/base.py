@@ -49,6 +49,7 @@ class Field(MVCComponent):
         is raised.
 
     """
+    _abstract = False
     creation_counter = 0
     default = None
     __events__ = (
