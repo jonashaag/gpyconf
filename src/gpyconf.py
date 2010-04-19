@@ -63,10 +63,15 @@ class ConfigurationMeta(type):
                 class_fields[name] = field
                 field.field_var = name
 
+        new_fields = list()
         for name, obj in class_dict.items():
             if isinstance(obj, fields.Field):
-                class_fields[name] = class_dict.pop(name)
-                obj.field_var = name
+                new_fields.append((name, class_dict.pop(name)))
+
+        new_fields.sort(key=lambda item:item[1].creation_counter)
+        for name, field in new_fields:
+            class_fields[name] = field
+            field.field_var = name
 
         return super_new(cls, name, bases, class_dict)
 
