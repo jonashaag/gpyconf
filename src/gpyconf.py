@@ -48,23 +48,27 @@ class DefaultFrontend(Proxy):
 
 class ConfigurationMeta(type):
     """ Metaclass for the :class:`Configuration` class """
-    def __init__(self, name, bases, dict):
-        def sort_by_creation_counter(field1, field2):
-            return field1[1].creation_counter - field2[1].creation_counter
+    def __new__(cls, name, bases, class_dict):
+        super_new = super(ConfigurationMeta, cls).__new__
+        parents = tuple(base for base in bases
+                        if isinstance(base, ConfigurationMeta))
+        if not parents:
+            # This isn't a subclass of ConfigurationMeta, don't do anything special
+            return super_new(cls, name, bases, class_dict)
 
-        self.fields = dicts.FieldsDict()
+        class_fields = class_dict['fields'] = dicts.FieldsDict()
 
-        _fields = [(name, field) for name, field in dict.iteritems()
-                   if isinstance(field, fields.Field)]
-        _fields.sort(cmp=sort_by_creation_counter)
+        for superclass in parents:
+            for name, field in superclass.fields.iteritems():
+                class_fields[name] = field
+                field.field_var = name
 
-        for name, instance in _fields:
-            instance.field_var = name
-            # let the field know what variable name it got
-            self.fields[name] = instance
-            delattr(self, name)
-            # delete the attribute (we don't need it anymore; fields are
-            # handled by ``fields`` dict and __getattr__, __setattr__ stuff)
+        for name, obj in class_dict.items():
+            if isinstance(obj, fields.Field):
+                class_fields[name] = class_dict.pop(name)
+                obj.field_var = name
+
+        return super_new(cls, name, bases, class_dict)
 
 
 class Configuration(MVCComponent):
@@ -95,9 +99,8 @@ class Configuration(MVCComponent):
             ...
     """
     __metaclass__ = ConfigurationMeta
+    fields = dict()
 
-    #: a :class:`dict` mapping all attribute names to field instances
-    fields = None
     frontend_instance = None
     initially_read = False
     logger = None
