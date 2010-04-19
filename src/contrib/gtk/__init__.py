@@ -3,7 +3,7 @@ import gobject
 import gtk
 from gtk import accelerator_parse, accelerator_valid
 from gpyconf.fields import CharField
-from gpyconf.frontends._gtk import Widget, WIDGET_MAP
+from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
 
 
 class _HotkeyString(unicode):

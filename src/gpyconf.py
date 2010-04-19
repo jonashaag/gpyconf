@@ -42,21 +42,21 @@ class DefaultBackend(Proxy):
 
 class DefaultFrontend(Proxy):
     def __init__(self, *args, **kwargs):
-        from .frontends import _gtk
-        self._proxy_obj = _gtk.GtkConfigurationWindow(*args, **kwargs)
+        from .frontends import gtk
+        self._proxy_obj = gtk.ConfigurationDialog(*args, **kwargs)
 
 
 class ConfigurationMeta(type):
     """ Metaclass for the :class:`Configuration` class """
-    def __new__(cls, name, bases, class_dict):
+    def __new__(cls, cls_name, cls_bases, cls_dict):
         super_new = super(ConfigurationMeta, cls).__new__
-        parents = tuple(base for base in bases
+        parents = tuple(base for base in cls_bases
                         if isinstance(base, ConfigurationMeta))
         if not parents:
             # This isn't a subclass of ConfigurationMeta, don't do anything special
-            return super_new(cls, name, bases, class_dict)
+            return super_new(cls, cls_name, cls_bases, cls_dict)
 
-        class_fields = class_dict['fields'] = dicts.FieldsDict()
+        class_fields = cls_dict['fields'] = dicts.FieldsDict()
 
         for superclass in parents:
             for name, field in superclass.fields.iteritems():
@@ -64,16 +64,16 @@ class ConfigurationMeta(type):
                 field.field_var = name
 
         new_fields = list()
-        for name, obj in class_dict.items():
+        for name, obj in cls_dict.items():
             if isinstance(obj, fields.Field):
-                new_fields.append((name, class_dict.pop(name)))
+                new_fields.append((name, cls_dict.pop(name)))
 
         new_fields.sort(key=lambda item:item[1].creation_counter)
         for name, field in new_fields:
             class_fields[name] = field
             field.field_var = name
 
-        return super_new(cls, name, bases, class_dict)
+        return super_new(cls, cls_name, cls_bases, cls_dict)
 
 
 class Configuration(MVCComponent):

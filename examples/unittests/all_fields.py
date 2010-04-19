@@ -1,6 +1,6 @@
 from gpyconf import fields
 from gpyconftest import Configuration
-import gpyconf.frontends._gtk
+import gpyconf.frontends.gtk
 
 MULTI_OPTION_FIELD_OPTIONS = (
     ('foo', 'Select me for foo'),
@@ -33,7 +33,7 @@ def call(callable):
 _fields = [field for field in _all(fields) if issubclass(field, fields.Field) and not field._abstract]
 _dict = dict((field.name.lower(), field) for field in map(call, _fields))
 _dict['logging_level'] = 'info'
-_dict['frontend'] = gpyconf.frontends._gtk.GtkConfigurationWindow.with_arguments(title='All Fields',
+_dict['frontend'] = gpyconf.frontends.gtk.ConfigurationDialog.with_arguments(title='All Fields',
                                                                                  ignore_missing_widgets=True)
 
 AllFieldsTest = type('AllFieldsTest', (Configuration,), _dict)
@@ -46,5 +46,5 @@ if __name__ == '__main__':
     #from gpyconf.backends.configparser import ConfigParserBackend as BACKEND
 
     test = AllFieldsTest(backend=BACKEND)
-    test.get_frontend()._dialog.set_size_request(800, 600)
+    test.get_frontend().dialog.set_size_request(800, 600)
     test.run_frontend()
