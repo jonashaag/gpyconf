@@ -3,6 +3,7 @@
 * Documentation for
     - DictField
     - ListField
+    - GTK+ Frontend
 * Documentation: Overview on which backend can handle which types correctly
 * Testsuite for backends
     -  including unicode/utf8 tests

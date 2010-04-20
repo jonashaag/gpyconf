@@ -177,10 +177,9 @@ class ConfigurationDialog(Frontend):
 
         field.connect('value-changed', self.on_field_value_changed)
         field.widget.connect('log', self.on_widget_log)
+        field.widget.connect('value-changed', self.on_widget_value_changed)
 
-        if field.editable:
-            field.widget.connect('value-changed', self.on_widget_value_changed)
-        else:
+        if not field.editable:
             field.widget.widget.set_sensitive(False)
 
         self.widgets[field.field_var] = field.widget
