@@ -12,12 +12,11 @@ def serialize_list(list):
     """ Serializes a list/tuple/iterable to a string. """
     return LIST_JOIN_SEQUENCE.join(_(list))
 
-def unserialize_list(string, itemtype=str):
+def unserialize_list(string, itemtype=unicode):
     """
     Unserializes a serialized list/tuple/iterable to a list
     using ``itemtype`` as type for each item.
     """
-    if itemtype is None: itemtype = lambda *x:None
     if not string: return list()
     if itemtype is bool: itemtype = lambda x:bool(int(x))
     return map(itemtype, string.split(LIST_JOIN_SEQUENCE))

@@ -10,6 +10,8 @@ __all__= ('Field',)
 
 class Field(MVCComponent):
     """
+    Superclass for all gpyconf fields.
+
     :param label:
         Label/short description of the presented value (e.g. "Text color:")
     :param label2:
@@ -43,10 +45,8 @@ class Field(MVCComponent):
     .. note::
 
         All additional arguments passed to the field constructor have to be
-        processed by that field. If there are remaining (not-used)
-        arguments after that call, an
-        :exc:`InvalidOptionError <gpyconf.exceptions.InvalidOptionError>`
-        is raised.
+        processed by that field. If there are remaining (unused)
+        arguments after that call, a :exc:`TypeError` is raised.
 
     """
     _abstract = False
@@ -83,7 +83,7 @@ class Field(MVCComponent):
         if kwargs:
             # there are still kwargs left - either the Field subclass did not
             # pop all kwargs it takes or unexpected kwargs were given.
-            # raise TypeError.
+            # raise a TypeError.
             if len(kwargs) == 1:
                 raise TypeError("%s.__init__ got an unexpected keyword argument"
                     " '%s'" % (self.name, kwargs.keys()[0]))
@@ -107,8 +107,8 @@ class Field(MVCComponent):
             Optional keyword arguments passed to the :meth:`__init__()`
             method. All items of this dictionary have to be deleted
             (recommended is to :meth:`dict.pop()` them) at the end of this
-            function (otherwise, a `TypeError` will be raised, see comments
-            in :meth:`Field.__init__()`).
+            function (otherwise, a :exc:`TypeError` will be raised,
+            see comments in :meth:`Field.__init__()`).
         """
         pass
 
@@ -116,11 +116,11 @@ class Field(MVCComponent):
         pass
 
     def update_counter(self):
-        self.creation_counter = Field.creation_counter
-        Field.creation_counter += 1
         # we want the fields exactly in the order we defined them,
         # so we'll need a creation counter because the fields are
         # handled by ConfigurationMeta using dicts (which aren't sorted)
+        self.creation_counter = Field.creation_counter
+        Field.creation_counter += 1
 
     @property
     def name(self):

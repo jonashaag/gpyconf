@@ -35,7 +35,7 @@ class ListField(Field):
         if self.length is not None and self.length != len(self.value):
             return False
         if self.item_type is not None:
-            return all(map(lambda x:isinstance(x, self.item_type), self.value))
+            return all(isinstance(item, self.item_type) for item in self.value)
         return True
 
 
@@ -59,7 +59,7 @@ class DictField(Field):
 
     def type_of(self, key):
         if not self.statically_typed:
-            raise TypeError("Can't get type of '%s' key of non-static typed %s"
+            raise TypeError("Can't get type of '%s' key of non-statically typed %s" \
                             % (key, self.name))
         return self.keys[key]
 
