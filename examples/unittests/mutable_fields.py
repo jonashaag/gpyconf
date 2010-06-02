@@ -18,8 +18,12 @@ class TestMutableFields(unittest.TestCase):
         conf.save()
         del conf
         conf = Config1()
-        self.assertEqual(conf.field, map(unicode, list1))
-        # everything should be unicode after serialization and deserialization
+        if conf.backend.__name__ == 'XMLBackend':
+            self.assertEqual(conf.field, list1)
+        else:
+            # no types, everything should be unicode after
+            # serialization and deserialization
+            self.assertEqual(conf.field, map(unicode, list1))
 
     def test_typed_listfield(self):
         class Config2(Configuration):
@@ -35,6 +39,7 @@ class TestMutableFields(unittest.TestCase):
         self.assertEqual(conf.field, list1)
 
         conf.field = ['a', 'b', 'c']
+        conf.save()
         self.assertRaises(gpyconf._internal.exceptions.InvalidOptionError,
                           conf.save)
 
