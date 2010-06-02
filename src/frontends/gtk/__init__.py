@@ -14,12 +14,9 @@ Custom widgets to be added to the mapping have to be inherited from the
 """
 import os
 import gtk
-from cream.util import joindir
-
-from widgets import get_widget_for_field
 
 from gpyconf.frontends import Frontend
-
+from widgets import get_widget_for_field
 from .utils import *
 
 class ConfigurationOption(object):

@@ -1,3 +1,5 @@
+import os
+
 def dict_to_font_description(_dict):
     from pango import FontDescription, STYLE_ITALIC, WEIGHT_BOLD
     desc = FontDescription()
@@ -24,3 +26,6 @@ def font_description_to_dict(desc):
 def to_rgb(srgb_tuple):
     """ Converts a three-tuple of SRGB values to RGB values """
     return map(lambda x:int(round(x/257.0)), srgb_tuple)
+
+def joindir(file, *parts):
+    return os.path.join(os.path.abspath(os.path.dirname(file)), *parts)
