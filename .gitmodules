@@ -1,3 +1,0 @@
-[submodule "src/backends/_xml/xmlserialize"]
-	path = src/backends/_xml/xmlserialize
-	url = git://github.com/jonashaag/xmlserialize.py
