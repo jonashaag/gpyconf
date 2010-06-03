@@ -1,6 +1,6 @@
 # %FILEHEADER%
 import gtk
-from gpyconf.events import GSignals
+from gpyconf.mvc import MVCComponent
 
 from .utils import *
 
@@ -12,8 +12,8 @@ def get_widget_for_field(field, mapping=None):
     """
     if mapping is None:
         mapping = WIDGET_MAP
-    if field.name in mapping:
-        return mapping[field.name](field)
+    if field._class_name in mapping:
+        return mapping[field._class_name](field)
     else:
         raise NotImplementedError("No widget defined for '%s' field. "
             "You could extend the `gpyconf.frontends._gtk.WIDGET_MAP` dict "
@@ -21,18 +21,19 @@ def get_widget_for_field(field, mapping=None):
             "(inherit from `gpyconf.frontends._gtk.Widget`)." % field)
 
 
-class Widget(GSignals):
+class Widget(MVCComponent):
     """
     Abstract base class for all widgets.
 
     A widget is used to "display" a field within the window.
     """
-    __events__ = ('value-changed', 'log')
+    __events__ = ('value-changed',)
     _changed_signal = 'changed'
 
     def __init__(self, field):
-        GSignals.__init__(self)
-        self.widget = self.widget()
+        MVCComponent.__init__(self)
+
+        self.widget = self.gtk_widget()
         self.field_var = field.field_var
         self.label = field.label
         self.label2 = field.label2
@@ -54,8 +55,10 @@ class Widget(GSignals):
         Emits :signal:`value-changed` with :attr:`value` as parameter.
         """
         self.emit('value-changed', self.value)
-        self.emit('log', "Value of %s '%s' changed to '%s'" % (
-            self.__class__.__name__, self.field_var, self.value), level='info')
+        log_msg = "Value of %s '%s' changed to '%s'" % (self._class_name,
+                                                        self.field_var,
+                                                        self.value)
+        self.emit('log', log_msg, level='info')
 
     def get_value(self):
         """
@@ -105,7 +108,7 @@ class Widget(GSignals):
 # DEFAULT WIDGETS AND CONTAINERS
 
 class BooleanWidget(Widget):
-    widget = gtk.CheckButton
+    gtk_widget = gtk.CheckButton
     prop = 'active'
     _changed_signal = 'toggled'
 
@@ -115,7 +118,7 @@ class BooleanWidget(Widget):
         self.label2 = None
 
 class NumberWidget(Widget):
-    widget = gtk.SpinButton
+    gtk_widget = gtk.SpinButton
     _changed_signal = 'value-changed'
     prop = 'value'
 
@@ -139,7 +142,7 @@ class IntegerWidget(NumberWidget):
         self.widget.set_increments(1, self.widget.get_increments()[0])
 
 class CharWidget(Widget):
-    widget = gtk.Entry
+    gtk_widget = gtk.Entry
     prop = 'text'
 
     def to_python(self, value):
@@ -168,7 +171,7 @@ class EmailAddressWidget(CharWidget):
     pass
 
 class MultiOptionWidget(Widget):
-    widget = gtk.combo_box_new_text
+    gtk_widget = gtk.combo_box_new_text
 
     def __init__(self, field):
         self.field = field
@@ -188,7 +191,7 @@ class MultiOptionWidget(Widget):
         self.widget.set_active(self.field.values.index(value))
 
 class ColorWidget(Widget):
-    widget = gtk.ColorButton
+    gtk_widget = gtk.ColorButton
     prop = 'color'
     _changed_signal = 'color-set'
 
@@ -199,7 +202,7 @@ class ColorWidget(Widget):
         return gtk.gdk.color_parse(value.to_string())
 
 class FontWidget(Widget):
-    widget = gtk.FontButton
+    gtk_widget = gtk.FontButton
     _changed_signal = 'font-set'
     prop = 'font-name'
 

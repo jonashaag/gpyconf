@@ -60,7 +60,7 @@ class DictField(Field):
     def type_of(self, key):
         if not self.statically_typed:
             raise TypeError("Can't get type of '%s' key of non-statically typed %s" \
-                            % (key, self.name))
+                            % (key, self._class_name))
         return self.keys[key]
 
     def allowed_types(self):

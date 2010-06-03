@@ -34,7 +34,7 @@ class DefaultFormatter(object):
         if classname is not None and self.verbose:
             _message += '(%s)' % classname
         if field is not None:
-            _message += "%s '%s': " % (field.name, field.field_var)
+            _message += "%s '%s': " % (field._class_name, field.field_var)
 
         message = ('\n'+' '*self._ljust_to).join(wordwrap(message, 79-self._ljust_to))
         return _message + message + '\n'

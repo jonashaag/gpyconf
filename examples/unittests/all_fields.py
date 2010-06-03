@@ -24,14 +24,14 @@ def _all(module):
 def call(callable):
     if issubclass(callable, fields.MultiOptionField):
         # expects parameter, extra handling
-        ins = callable(callable.name, options=(MULTI_OPTION_FIELD_OPTIONS))
+        ins = callable(callable._class_name, options=(MULTI_OPTION_FIELD_OPTIONS))
     else:
         ins = callable()
-    ins.label = ins.name
+    ins.label = ins._class_name
     return ins
 
 _fields = [field for field in _all(fields) if issubclass(field, fields.Field) and not field._abstract]
-_dict = dict((field.name.lower(), field) for field in map(call, _fields))
+_dict = dict((field._class_name.lower(), field) for field in map(call, _fields))
 _dict['logging_level'] = 'info'
 _dict['frontend'] = gpyconf.frontends.gtk.ConfigurationDialog.with_arguments(title='All Fields',
                                                                                  ignore_missing_widgets=True)

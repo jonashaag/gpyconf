@@ -35,7 +35,7 @@ class MVCComponent(events.GSignals):
         return ComponentFactory(cls, *args, **kwargs)
 
     @property
-    def name(self):
+    def _class_name(self):
         """ Wrapper to :attr:`self.__class__.__name__` """
         return self.__class__.__name__
 

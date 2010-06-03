@@ -39,7 +39,6 @@ class TestMutableFields(unittest.TestCase):
         self.assertEqual(conf.field, list1)
 
         conf.field = ['a', 'b', 'c']
-        conf.save()
         self.assertRaises(gpyconf._internal.exceptions.InvalidOptionError,
                           conf.save)
 

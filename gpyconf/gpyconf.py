@@ -131,7 +131,7 @@ class Configuration(MVCComponent):
             setattr(self, key, value)
 
         if self.logger is None:
-            self.logger = logging.Logger(self.__class__.__name__, self.logging_level)
+            self.logger = logging.Logger(self._class_name, self.logging_level)
         self.logger.info("Logger initialized (%s)" % self.logger)
 
         if not hasattr(self, 'backend_instance'):

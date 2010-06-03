@@ -85,11 +85,15 @@ class Field(MVCComponent):
             # pop all kwargs it takes or unexpected kwargs were given.
             # raise a TypeError.
             if len(kwargs) == 1:
-                raise TypeError("%s.__init__ got an unexpected keyword argument"
-                    " '%s'" % (self.name, kwargs.keys()[0]))
+                raise TypeError(
+                    "%s.__init__ got an unexpected keyword argument '%s'" \
+                    % (self._class_name, kwargs.iterkeys().next())
+                )
             else:
-                raise TypeError("%s.__init__ got unexpected keyword arguments %s"
-                    % (self.name, ', '.join(kwargs.keys())))
+                raise TypeError(
+                    "%s.__init__ got unexpected keyword arguments %s" \
+                    % (self._class_name, ', '.join(kwargs.iterkeys()))
+                )
 
         if default is not None:
             self._user_set_default = self.to_python(default)
@@ -122,14 +126,6 @@ class Field(MVCComponent):
         self.creation_counter = Field.creation_counter
         Field.creation_counter += 1
 
-    @property
-    def name(self):
-        """
-        Name of the field class
-        (this simply is a wrapper to the ``self.__class__.__name__`` attribute)
-        """
-        return self.__class__.__name__
-
     def __getattribute__(self, attribute):
         if attribute == 'default':
             if hasattr(self, '_user_set_default'):
@@ -157,7 +153,7 @@ class Field(MVCComponent):
         """
         if not self.editable:
             raise AttributeError("Can't change value of non-editable field '%s'"
-                % self.name)
+                % self._class_name)
         value = self.to_python(value)
         emit = value != self.value
         self._value = value
@@ -202,7 +198,7 @@ class Field(MVCComponent):
         if callable(allowed_types):
             allowed_types = allowed_types()
         message = "%(name)s only allows %(allowed)s %(x)s" % {
-            'name' : self.name,
+            'name' : self._class_name,
             'allowed' : allowed_types,
             'x' : '' if faulty is None else " (not %s)" % type(faulty).__name__
         }
