@@ -11,7 +11,7 @@ but nobody bars you from using a web interface or your
 
 In your :doc:`Configuration definition </usage>`, you can overwrite the
 default frontend (which is a
-:class:`GtkConfigurationWindow <gpyconf.frontends._gtk.GtkConfigurationWindow>`)
+:class:`GtkConfigurationWindow <gpyconf.frontends.gtk.ConfigurationDialog>`)
 using the :attr:`frontend` attribute. Example::
 
     class MyConfiguration(Configuration):
@@ -30,7 +30,7 @@ Included frontends
 .. toctree ::
    :maxdepth: 1
 
-   GTK+ Frontend (default) <frontends/_gtk>
+   GTK+ Frontend (default) <frontends/gtk>
 
 
 API documentation
