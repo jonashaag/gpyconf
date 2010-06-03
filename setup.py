@@ -17,6 +17,7 @@ setup(
                    'gpyconf.backends',
                         'gpyconf.backends._xml',
                    'gpyconf.fields'
-                  ]
+                  ],
+    package_data= {'gpyconf.frontends.gtk' : ['interface/*']}
 )
 
