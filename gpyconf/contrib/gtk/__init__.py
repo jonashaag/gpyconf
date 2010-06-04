@@ -28,7 +28,7 @@ class HotkeyButton(gtk.Button):
     __gtype_name__ = 'HotkeyButton'
     __gsignals__ = {
         'changed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
-        }
+    }
 
     def __init__(self):
 
@@ -76,13 +76,11 @@ class HotkeyButton(gtk.Button):
 
 class HotkeyWidget(Widget):
 
-    widget = HotkeyButton
+    gtk_widget = HotkeyButton
 
     def __init__(self, field):
 
         Widget.__init__(self, field)
-
-        #self.widget = gtk.Button(field.value)
 
 
     def set_value(self, value):
