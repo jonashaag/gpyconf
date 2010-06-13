@@ -88,7 +88,7 @@ except ImportError:
             return cls((k, value) for k in iterable)
 
         def __eq__(self, other):
-            if isinstance(other, OrderedDict):
+            if isinstance(other, ordereddict):
                 return len(self)==len(other) and \
                        all(p==q for p, q in  zip(self.items(), other.items()))
             return dict.__eq__(self, other)
