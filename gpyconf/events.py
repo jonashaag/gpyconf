@@ -117,10 +117,6 @@ class EventRegister(object):
         else:
             self.events[event].append(callback)
 
-    def r(self, *args, **kwargs):
-        """ Shortcut to :meth:`register_event` """
-        return self.register_event(*args, **kwargs)
-
     def emit(self, event, *args, **kwargs):
         """
         Emit ``event``. Calls all callbacks registered for this ``event`` and
