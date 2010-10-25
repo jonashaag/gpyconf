@@ -241,10 +241,10 @@ class FileField(URLField):
         return urlparse('file:///')
 
     def to_python(self, value):
-        uri = URLField.to_python(self, value)
-        if not uri.scheme:
-            uri = URLField.to_python(self, 'file://'+value)
-        return uri
+        url = URLField.to_python(self, value)
+        if not url.scheme:
+            url = URLField.to_python(self, 'file://'+value)
+        return url
 
 
 class EmailAddressField(CharField):
