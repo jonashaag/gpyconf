@@ -93,7 +93,7 @@ class MultiOptionField(Field):
     def python_to_conf(self, value):
         if type(value)(str(value)) != value:
             raise InvalidOptionError(self,
-                "'%s' has an incompatible type ('%s')" % (value, type(value)))
+                "%r has an incompatible type (%r)" % (value, type(value)))
         return str(value)
 
 
@@ -155,12 +155,12 @@ class CharField(Field):
 
 class PasswordField(CharField):
     """
-    A simple password field. Saves values as base64 encoded unicode-string.
+    A simple password field. Saves values as a base64 encoded unicode-string.
     """
 
     def python_to_conf(self, value):
-        return value.encode('base64')
         # we want at least some basic password covering
+        return value.encode('base64')
 
     def conf_to_python(self, value):
         from binascii import Error as BinError
@@ -196,7 +196,7 @@ class URIField(CharField):
         scheme://scheme specific part
     """
     _scheme = '[a-z][a-z\.\-:\d]*://.*'
-    allowed_types = "unicode strings following the URI scheme ('%s')" % _scheme
+    allowed_types = "unicode strings following the URI scheme (%r)" % _scheme
 
     def __valid__(self):
         from re import match
@@ -293,7 +293,6 @@ class ColorField(Field):
     default = RGBTuple((0, 0, 0))
 
     def to_python(self, value):
-        # TODO: cleanup.
         if isinstance(value, basestring):
             return RGBTuple.from_hexstring(value)
         else:

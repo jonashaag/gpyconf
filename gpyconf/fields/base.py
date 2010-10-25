@@ -86,7 +86,7 @@ class Field(MVCComponent):
             # raise a TypeError.
             if len(kwargs) == 1:
                 raise TypeError(
-                    "%s.__init__ got an unexpected keyword argument '%s'" \
+                    "%s.__init__ got an unexpected keyword argument %r" \
                     % (self._class_name, kwargs.iterkeys().next())
                 )
             else:
@@ -152,7 +152,7 @@ class Field(MVCComponent):
         Emits the :signal:`value-changed` signal if the field's value changed.
         """
         if not self.editable:
-            raise AttributeError("Can't change value of non-editable field '%s'"
+            raise AttributeError("Can't change value of non-editable field %r"
                 % self._class_name)
         value = self.to_python(value)
         emit = value != self.value
