@@ -218,9 +218,12 @@ class URLField(CharField):
         return urlparse('')
 
     def to_python(self, value):
-        from urlparse import urlparse, ParseResult
+        from urlparse import urlparse, urlunparse, ParseResult
         if isinstance(value, ParseResult):
             return value
+        if isinstance(value, tuple):
+            # unparse pure tuples so they can be parsed into a ParseResult tuple
+            value = urlunparse(value)
         return urlparse(value)
 
     def python_to_conf(self, value):
