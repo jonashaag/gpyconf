@@ -171,22 +171,20 @@ class PasswordField(CharField):
             # which will be catched by get_value
 
 class IPAddressField(CharField):
-    """ An IP address field with simple validation """
     def __valid__(self):
-        ip = self.value
-        if ip.count('.') != 3 and ip.count('.') != 5 or \
-        not ip.replace('.', '').isdigit():
-            return False
-        # very, very basic ip syntax testing
-        # TODO: ipv6! :-D
-        else:
-            parts = [int(part) for part in ip.split('.')]
-            for part in parts:
-                if not (0 <= part <= 255):
-                    # not in ip range
-                    return False
-        return True
+        import socket
+        try:
+            # try ipv4
+            socket.inet_pton(socket.AF_INET, self.value)
+        except socket.error:
+            try:
+                # try ipv6
+                socket.inet_pton(socket.AF_INET6, self.value)
+            except socket.error:
+                # both failed
+                return False
 
+        return True
 
 class URIField(CharField):
     """
