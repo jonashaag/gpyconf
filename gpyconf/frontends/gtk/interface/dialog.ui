@@ -5,8 +5,7 @@
   <object class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
     <property name="window_position">center</property>
-    <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="layout">
         <property name="visible">True</property>
