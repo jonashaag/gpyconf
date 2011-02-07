@@ -141,6 +141,8 @@ class IntegerWidget(NumberWidget):
         self.widget.set_digits(0)
         self.widget.set_increments(1, self.widget.get_increments()[0])
 
+        self.value = field.value
+
 class CharWidget(Widget):
     gtk_widget = gtk.Entry
     prop = 'text'
