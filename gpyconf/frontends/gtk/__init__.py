@@ -16,6 +16,7 @@ import os
 import gtk
 
 from gpyconf.frontends import Frontend
+from gpyconf._internal.exceptions import InvalidOptionError
 from widgets import get_widget_for_field
 from .utils import *
 
