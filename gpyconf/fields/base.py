@@ -49,7 +49,11 @@ class Field(MVCComponent):
         arguments after that call, a :exc:`TypeError` is raised.
 
     """
-    _abstract = False
+    class __metaclass__(type):
+        def __new__(cls, name, bases, dct):
+            dct.setdefault('abstract', False)
+            return type.__new__(cls, name, bases, dct)
+    abstract = True
     creation_counter = 0
     default = None
     __events__ = (

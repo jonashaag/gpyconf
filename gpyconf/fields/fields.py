@@ -107,7 +107,7 @@ class NumberField(Field):
     :param max:
         The maxmimal value allowed, defaults to 100.
     """
-    _abstract = True
+    abstract = True
     min = 0
     max = 100
 

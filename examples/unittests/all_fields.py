@@ -30,7 +30,7 @@ def call(callable):
     ins.label = ins._class_name
     return ins
 
-_fields = [field for field in _all(fields) if issubclass(field, fields.Field) and not field._abstract]
+_fields = [field for field in _all(fields) if issubclass(field, fields.Field) and not field.abstract]
 _dict = dict((field._class_name.lower(), field) for field in map(call, _fields))
 _dict['logging_level'] = 'info'
 _dict['frontend'] = gpyconf.frontends.gtk.ConfigurationDialog.with_arguments(title='All Fields',
