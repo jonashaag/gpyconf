@@ -5,7 +5,6 @@
 
 from __future__ import print_function
 import os
-from utils import isiterable
 from operator import itemgetter
 from textwrap import wrap as wordwrap
 

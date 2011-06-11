@@ -28,7 +28,7 @@ class DummyBackend(Backend):
         print ("Get option %s" % name)
         try:
             return self.backref().fields[name].value
-        except KeyError, e:
+        except KeyError:
             print("Option not set, using default value %s" % default)
             if default:
                 return default

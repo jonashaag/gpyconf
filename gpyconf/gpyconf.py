@@ -208,7 +208,6 @@ class Configuration(MVCComponent):
                 if value is None:
                     value = u''
                 else:
-                    _value = value
                     value = field.python_to_conf(value)
                 if not isinstance(value, unicode):
                     self.logger.warning("Wrong datatype conversion: "

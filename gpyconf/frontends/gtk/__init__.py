@@ -12,7 +12,6 @@ Sections are separated using tabs.
 Custom widgets to be added to the mapping have to be inherited from the
 :class:`Widget` base class and have to implement all documented methods.
 """
-import os
 import gtk
 
 from gpyconf.frontends import Frontend
@@ -208,7 +207,7 @@ class ConfigurationDialog(Frontend):
         if save:
             try:
                 self.emit('save')
-            except InvalidOptionError, e:
+            except InvalidOptionError:
                 # TODO: Some error displaying here.
                 self.run()
         self.emit('closed')

@@ -32,7 +32,7 @@ class JSONBackend(FileBasedBackend):
 
     def get_option(self, name, default=NONE):
         try:
-            return self.json_tree[section][name]
+            return self.json_tree[self.section][name]
         except KeyError:
             if default is not NONE:
                 return default

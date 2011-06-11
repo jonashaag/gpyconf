@@ -65,7 +65,7 @@ gpyconf's architecture
 ----------------------
 
 As told before, gpyconf (more or less) follows the MVC pattern. It's
-architecture is splitted in Model (your configuration option definition),
+architecture is split in Model (your configuration option definition),
 backend (which stores the options, e.g. into a file or in a database),
 frontend (interaction with your users, typically using a configuration dialog)
 and Controller (which connects the mentioned components and presents the
