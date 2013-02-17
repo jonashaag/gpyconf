@@ -34,9 +34,11 @@ class HotkeyButton(gtk.Button):
 
         self.value = None
 
-        self.dialog = gtk.Dialog(None, None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_NO_SEPARATOR,
-                     (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
-        self.dialog.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        self.dialog = gtk.Dialog(None, None,
+            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
+            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT)
+        )
+        self.dialog.set_position(gtk.WindowPosition.CENTER_ALWAYS)
 
         self.dialog_content = self.dialog.get_content_area()
         self.dialog_content.pack_start(gtk.Label("Please press a hotkey combination..."), True, True, 10)

@@ -75,16 +75,16 @@ class ConfigurationGroup(object):
 
         if option.label and not option.post_label:
             self.table.attach(option.label_container, 0, 1, row, row+1)
-            self.table.attach(option.widget_container, 1, 2, row, row+1, xoptions=gtk.FILL)
+            self.table.attach(option.widget_container, 1, 2, row, row+1, xoptions=gtk.Align.FILL)
         elif option.label and option.post_label:
             box = gtk.HBox()
             box.set_spacing(10)
             box.pack_start(option.label_container, expand=False)
             box.pack_start(option.widget_container, expand=False)
             box.pack_start(option.post_label_container, expand=False)
-            self.table.attach(box, 0, 2, row, row+1, xoptions=gtk.FILL)
+            self.table.attach(box, 0, 2, row, row+1, xoptions=gtk.Align.FILL)
         else:
-            self.table.attach(option.widget_container, 0, 2, row, row+1, xoptions=gtk.FILL)
+            self.table.attach(option.widget_container, 0, 2, row, row+1, xoptions=gtk.Align.FILL)
 
 
     def add_field(self, field):
@@ -199,7 +199,7 @@ class ConfigurationDialog(Frontend):
 
         self.dialog.show_all()
         response = self.dialog.run()
-        self.close(save=response==gtk.RESPONSE_CLOSE)
+        self.close(save=response==gtk.ResponseType.CLOSE)
 
 
     def close(self, save=False):
