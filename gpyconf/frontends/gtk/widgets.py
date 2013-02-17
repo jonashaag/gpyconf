@@ -168,7 +168,7 @@ class EmailAddressWidget(CharWidget):
     pass
 
 class MultiOptionWidget(Widget):
-    gtk_widget = gtk.combo_box_new_text
+    gtk_widget = gtk.ComboBoxText
 
     def __init__(self, field):
         self.field = field
