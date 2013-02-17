@@ -50,8 +50,13 @@ class HotkeyButton(gtk.Button):
     def clicked_cb(self, source):
 
         self.dialog.show_all()
-        while gtk.gdk.keyboard_grab(self.dialog.window) != gtk.gdk.GRAB_SUCCESS:
-            time.sleep (0.1)
+
+        device = gtk.get_current_event_device()
+        window = self.dialog.get_window()
+        ownership = gdk.GrabOwnership.NONE
+        t = gtk.get_current_event_time()
+        while gdk.Device.grab(device, window, ownership, False, 0, None, t) != gdk.GrabStatus.SUCCESS:
+            time.sleep(0.1)
         self.dialog.run()
         self.dialog.hide()
 
@@ -64,7 +69,7 @@ class HotkeyButton(gtk.Button):
         if gtk.accelerator_valid(keyval, modifier_mask):
             self.set_value(gtk.accelerator_name(keyval, modifier_mask))
             self.emit('changed')
-            gtk.gdk.keyboard_ungrab(gtk.get_current_event_time())
+            gdk.Device.ungrab(gtk.get_current_event_device(), gtk.get_current_event_time())
             self.dialog.hide()
 
 
