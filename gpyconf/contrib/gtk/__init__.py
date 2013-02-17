@@ -1,5 +1,4 @@
 import time
-from gtk import accelerator_parse, accelerator_valid
 from gi.repository import Gtk as gtk, Gdk as gdk, GObject as gobject
 from gpyconf.fields import CharField
 from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
@@ -8,7 +7,7 @@ from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
 class _HotkeyString(unicode):
     def __new__(cls, *args, **kwargs):
         self = unicode.__new__(cls, *args, **kwargs)
-        self.keyval, self.modifiers = accelerator_parse(self)
+        self.keyval, self.modifiers = gtk.accelerator_parse(self)
         return self
 
 class HotkeyField(CharField):
@@ -20,7 +19,7 @@ class HotkeyField(CharField):
         return _HotkeyString(value)
 
     def __valid__(self):
-        return accelerator_valid(*(accelerator_parse(self.value)))
+        return gtk.accelerator_valid(*(gtk.accelerator_parse(self.value)))
 
 class HotkeyButton(gtk.Button):
 
