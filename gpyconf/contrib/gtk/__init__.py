@@ -25,7 +25,7 @@ class HotkeyButton(gtk.Button):
 
     __gtype_name__ = 'HotkeyButton'
     __gsignals__ = {
-        'changed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+        'changed': (gobject.SignalFlags.RUN_LAST, None, ()),
     }
 
     def __init__(self):
