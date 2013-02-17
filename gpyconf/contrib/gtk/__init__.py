@@ -1,7 +1,5 @@
 import time
-import gobject
-import gtk
-from gtk import accelerator_parse, accelerator_valid
+from gi.repository import Gtk as gtk, Gdk as gdk, GObject as gobject
 from gpyconf.fields import CharField
 from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
 
@@ -9,7 +7,7 @@ from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
 class _HotkeyString(unicode):
     def __new__(cls, *args, **kwargs):
         self = unicode.__new__(cls, *args, **kwargs)
-        self.keyval, self.modifiers = accelerator_parse(self)
+        self.keyval, self.modifiers = gtk.accelerator_parse(self)
         return self
 
 class HotkeyField(CharField):
@@ -21,13 +19,13 @@ class HotkeyField(CharField):
         return _HotkeyString(value)
 
     def __valid__(self):
-        return accelerator_valid(*(accelerator_parse(self.value)))
+        return gtk.accelerator_valid(*(gtk.accelerator_parse(self.value)))
 
 class HotkeyButton(gtk.Button):
 
     __gtype_name__ = 'HotkeyButton'
     __gsignals__ = {
-        'changed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
+        'changed': (gobject.SignalFlags.RUN_LAST, None, ()),
     }
 
     def __init__(self):
@@ -36,9 +34,11 @@ class HotkeyButton(gtk.Button):
 
         self.value = None
 
-        self.dialog = gtk.Dialog(None, None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_NO_SEPARATOR,
-                     (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
-        self.dialog.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        self.dialog = gtk.Dialog(None, None,
+            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
+            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT)
+        )
+        self.dialog.set_position(gtk.WindowPosition.CENTER_ALWAYS)
 
         self.dialog_content = self.dialog.get_content_area()
         self.dialog_content.pack_start(gtk.Label("Please press a hotkey combination..."), True, True, 10)
@@ -50,8 +50,13 @@ class HotkeyButton(gtk.Button):
     def clicked_cb(self, source):
 
         self.dialog.show_all()
-        while gtk.gdk.keyboard_grab(self.dialog.window) != gtk.gdk.GRAB_SUCCESS:
-            time.sleep (0.1)
+
+        device = gtk.get_current_event_device()
+        window = self.dialog.get_window()
+        ownership = gdk.GrabOwnership.NONE
+        t = gtk.get_current_event_time()
+        while gdk.Device.grab(device, window, ownership, False, 0, None, t) != gdk.GrabStatus.SUCCESS:
+            time.sleep(0.1)
         self.dialog.run()
         self.dialog.hide()
 
@@ -64,7 +69,7 @@ class HotkeyButton(gtk.Button):
         if gtk.accelerator_valid(keyval, modifier_mask):
             self.set_value(gtk.accelerator_name(keyval, modifier_mask))
             self.emit('changed')
-            gtk.gdk.keyboard_ungrab(gtk.get_current_event_time())
+            gdk.Device.ungrab(gtk.get_current_event_device(), gtk.get_current_event_time())
             self.dialog.hide()
 
 
