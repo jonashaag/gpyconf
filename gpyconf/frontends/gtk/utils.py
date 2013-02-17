@@ -1,24 +1,24 @@
 import os
 
 def dict_to_font_description(_dict):
-    from pango import FontDescription, STYLE_ITALIC, WEIGHT_BOLD
+    from gi.repository.Pango import FontDescription, Style, Weight
     desc = FontDescription()
     desc.set_family(_dict['name'])
     desc.set_size(_dict['size']*1024) # *1024? aha.
     if _dict['italic']:
-        desc.set_style(STYLE_ITALIC)
+        desc.set_style(Style.ITALIC)
     if _dict['bold']:
-        desc.set_weight(WEIGHT_BOLD)
+        desc.set_weight(Weight.BOLD)
     return desc
 
 def font_description_to_dict(desc):
-    from pango import FontDescription, STYLE_ITALIC, WEIGHT_BOLD
+    from gi.repository.Pango import FontDescription, Style, Weight
     desc = FontDescription(desc)
     return {
         'name' : desc.get_family(),
         'size' : int(desc.get_size()/1024.0),
-        'bold' : desc.get_weight() == WEIGHT_BOLD,
-        'italic' : desc.get_style() == STYLE_ITALIC,
+        'bold' : desc.get_weight() == Weight.BOLD,
+        'italic' : desc.get_style() == Style.ITALIC,
         'underlined' : False
         # TODO
     }
