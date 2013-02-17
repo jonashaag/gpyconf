@@ -12,7 +12,8 @@ Sections are separated using tabs.
 Custom widgets to be added to the mapping have to be inherited from the
 :class:`Widget` base class and have to implement all documented methods.
 """
-import gtk
+import os
+from gi.repository import Gtk as gtk
 
 from gpyconf.frontends import Frontend
 from gpyconf._internal.exceptions import InvalidOptionError

@@ -1,5 +1,5 @@
 # %FILEHEADER%
-import gtk
+from gi.repository import Gtk as gtk
 from gpyconf.mvc import MVCComponent
 
 from .utils import *

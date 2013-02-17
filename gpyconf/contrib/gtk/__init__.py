@@ -1,7 +1,6 @@
 import time
-import gobject
-import gtk
 from gtk import accelerator_parse, accelerator_valid
+from gi.repository import Gtk as gtk, Gdk as gdk, GObject as gobject
 from gpyconf.fields import CharField
 from gpyconf.frontends.gtk.widgets import Widget, WIDGET_MAP
 
